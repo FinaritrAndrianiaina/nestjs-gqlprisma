@@ -18,11 +18,6 @@ export class UsersResolver {
     return user;
   }
 
-  @Mutation(() => User, { name: 'createUser' })
-  createUser(@Args('createUserInput') createUserInput: UserCreateInput) {
-    return this.db.user.create({ data: createUserInput });
-  }
-
   @Query(() => [User])
   queryUser(
     @Args('queryUserInput') queryUserInput: UserScalarWhereWithAggregatesInput,

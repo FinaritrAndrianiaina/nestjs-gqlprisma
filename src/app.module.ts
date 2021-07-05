@@ -1,4 +1,5 @@
 import { APP_FILTER } from '@nestjs/core';
+import { BadRequestFilter } from './filter/badrequest-exception.filter';
 import { UnauthorizedFilter } from './filter/unauthorized-exception.filter';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -23,6 +24,10 @@ import { ConfigModule } from '@nestjs/config';
   ],
   controllers: [AppController],
   providers: [
+    {
+      provide: APP_FILTER,
+      useClass: BadRequestFilter,
+    },
     {
       provide: APP_FILTER,
       useClass: UnauthorizedFilter,

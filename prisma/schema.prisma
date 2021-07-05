@@ -16,9 +16,37 @@ generator prismanestjsgql {
 }
 
 model User {
-  id       String @id @default(cuid())
-  username String @unique
-  email    String @unique
+  id       String   @id @default(cuid())
+  email    String   @unique
   /// @HideField({output:true,input:false})
   password String
+  profile  Profile? @relation("UserToProfile")
+}
+
+model Profile {
+  username  String    @id
+  bio       String
+  image     String?
+  userId    String
+  followers Profile[] @relation("Follow")
+  following Profile[] @relation("Follow")
+  user      User      @relation("UserToProfile",fields: [userId], references: [id])
+  liked     Article[] @relation("Like")
+  articles  Article[] @relation("Author")
+}
+
+model Article {
+  id             String     @id @default(uuid())
+  title          String
+  body           String
+  categories     Category[]
+  likes          Profile[]  @relation("Like")
+  author         Profile    @relation("Author", fields: [authorUsername], references: [username])
+  authorUsername String
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  articles Article[]
 }
